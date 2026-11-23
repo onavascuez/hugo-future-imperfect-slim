@@ -16,6 +16,10 @@
  * Kroc Camen, and the H5BP dev community and team.
  */
 
+@use "sass:color";
+@use "sass:list";
+@use "sass:math";
+
 /* ==========================================================================
    Variables
    ========================================================================== */
@@ -111,7 +115,7 @@ $masks: (
   $prefixes: ('webkit', 'moz', 'ms', 'o');
   @if ($vendors) {
     @each $vendor in $vendors {
-      @if index($prefixes, $vendor){
+      @if list.index($prefixes, $vendor){
         -#{$vendor}-#{$property}: #{$value};
       }
     }
@@ -1490,7 +1494,7 @@ figcaption {
     }
   }
   &.comment-reply {
-    margin-left: $avatar-size/2;
+    margin-left: math.div($avatar-size, 2);
     @include for-mobile-l-up {
       margin-left: $avatar-size;
     }
@@ -1589,7 +1593,7 @@ figcaption {
     position: relative;
     top: 2px;
     box-shadow: none;
-    color: darken($white, 10%);
+    color: color.adjust($white, $lightness: -10%);
   }
   &:hover {
     color: $white;
@@ -1605,7 +1609,7 @@ figcaption {
       font-weight: $font-weight;
     }
     &:hover {
-      background-color: darken($color, 10%);
+      background-color: color.adjust($color, $lightness: -10%);
     }
     &::before {
     @if $font-family {
