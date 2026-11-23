@@ -1804,3 +1804,195 @@ figcaption {
     page-break-after: avoid;
   }
 }
+
+/* ==========================================================================
+   Closer to the original design
+   ==========================================================================
+   Hugo Future Imperfect Slim departs from HTML5 UP's Future Imperfect in
+   spacing, shadows and alignment. The rules below bring the layout back to
+   the original values (html5up.net/uploads/demos/future-imperfect/):
+
+   - header without drop shadow, only its 1px bottom border
+   - posts with a 1px border, 3em of inner spacing and 3em between them,
+     no max-width
+   - small uppercase subtitle under the post title, 17em meta column
+   - featured image inside the post padding
+   - compact "read more" button on the left, categories and tags on the
+     same line on the right, without icons
+   - left-aligned intro and sidebar, larger site title
+   - body text in the original mid grey, not justified
+   - original page padding
+
+   Small screens keep the Slim layout. Remove this section to get the Slim
+   look back.
+   ========================================================================== */
+
+$original-text-color: hsl(0, 0%, 39%);
+
+body, input, select, textarea {
+  color: $original-text-color;
+}
+
+#site-header {
+  box-shadow: none;
+}
+
+.post {
+  border: $primary-border;
+  > div > p,
+  > p {
+    text-align: left;
+  }
+}
+
+.mini-post {
+  margin-bottom: 2em;
+  header {
+    min-height: 0;
+    padding: 1.25em 1.25em 0.6em;
+    h2 {
+      margin: 0 0 0.35em;
+    }
+    time {
+      display: block;
+    }
+  }
+}
+
+@include for-laptop-up {
+  .post {
+    margin: 0 0 3em;
+    max-width: none;
+    padding: 3em 3em 1em;
+    > header {
+      margin: -3em -3em 3em -3em;
+      div {
+        padding: 0;
+      }
+      .title {
+        flex-grow: 1;
+        font-size: 1em;
+        padding: 3.75em 3em 3.3em;
+        width: auto;
+        h1,
+        h2 {
+          font-size: 1.5em;
+          font-weight: 900;
+          margin: 0 0 1em;
+        }
+        p {
+          font-family: $header-font;
+          font-size: 0.7em;
+          letter-spacing: 0.25em;
+          line-height: 2.5;
+          margin: -1em 0 0;
+          text-transform: uppercase;
+        }
+      }
+      /* 17em in the original; .meta is set at 0.6em here, hence the values */
+      .meta {
+        justify-content: flex-start;
+        min-width: 28.34em;
+        padding: 6.25em 5em 2.9em;
+        width: 28.34em;
+        time {
+          font-size: 1.17em;
+          white-space: nowrap;
+        }
+        p {
+          margin: 0.75em 0 0;
+        }
+      }
+    }
+    .content > .image {
+      margin: 0 0 3em;
+      padding-bottom: 40.6%;
+    }
+    footer {
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: wrap;
+      .button {
+        font-size: 0.7em;
+        margin: 0 0 2em;
+        padding: 0 3em;
+        width: auto;
+      }
+      .stats {
+        flex-direction: row;
+        justify-content: flex-end;
+        margin: 0 0 2em auto;
+        ul {
+          flex-wrap: nowrap;
+          margin: 0;
+          max-width: none;
+          &::before {
+            display: none;
+          }
+          li,
+          & + ul li:first-child {
+            border-left: $primary-border;
+            margin-left: 2em;
+            padding-left: 2em;
+          }
+          &:first-child li:first-child {
+            border-left: 0;
+            margin-left: 0;
+            padding-left: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include for-desktop-up {
+  #wrapper {
+    column-gap: 3em;
+    padding: 3em;
+  }
+  #site-intro {
+    align-items: flex-start;
+    margin-top: 0;
+    padding: 0;
+    text-align: left;
+    header h1 {
+      font-size: 2em;
+      font-weight: 900;
+      margin: 0.5em 0 0.35em;
+    }
+    main p {
+      font-size: 0.8em;
+    }
+  }
+  #site-intro,
+  #site-footer {
+    .socnet-icons {
+      justify-content: flex-start;
+      li:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+  #site-sidebar {
+    > * {
+      margin: 3em 0 0;
+      &:first-child {
+        margin-top: 3em;
+      }
+    }
+    footer {
+      margin: 0;
+    }
+  }
+  #site-footer {
+    margin: 3em 0;
+    text-align: left;
+  }
+}
+
+@media (min-width: 1681px) {
+  #wrapper {
+    padding: 4.5em;
+  }
+}

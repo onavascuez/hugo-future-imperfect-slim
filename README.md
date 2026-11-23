@@ -13,6 +13,18 @@
 > - Added Catalan (`ca`) translation.
 > - Pagination is configured with `[pagination] pagerSize` in your site config.
 >
+> **Closer to the original design.** Hugo Future Imperfect Slim departs from HTML5 UP's [Future Imperfect](https://html5up.net/uploads/demos/future-imperfect/) in spacing, shadows and alignment. This fork brings the layout back to the original values:
+> - header without drop shadow, only its 1px bottom border
+> - posts with a 1px border, 3em of inner spacing and 3em between them, and no maximum width
+> - small uppercase subtitle under the post title, and a 17em column for the date
+> - featured image inside the post padding instead of edge to edge
+> - compact "read more" button on the left, with categories and tags on the same line on the right, without icons
+> - left-aligned intro and sidebar, with a larger site title
+> - body text in the original mid grey, left-aligned instead of justified
+> - original page padding
+>
+> These rules live in one section at the end of `assets/scss/main.scss` ("Closer to the original design"). Delete that section to get the Slim look back. Small screens keep the Slim layout.
+>
 > New in this fork:
 > - **Featured posts in the sidebar** (optional). Set `featuredAmount` under `[params.sidebar]` to show that many featured posts above the recent ones. A post is featured when its front matter has `pinned = true`; change the parameter name with `featuredParam`. `recentExcludesFeatured = true` keeps featured posts out of the recent list.
 > - `[params.sidebar] hideViewMore = true` hides the "See More" button, and `aboutLink` sets where the about block's button points (it was hardcoded to `about`).
