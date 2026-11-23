@@ -1,5 +1,19 @@
 # Hugo Future Imperfect Slim
 
+> **About this fork.** The original theme was archived in April 2022 and no longer builds with current Hugo.
+> This fork makes it build again. Tested with **Hugo 0.170.1** (standard edition, no Sass needed).
+>
+> What changed:
+> - Removed templates Hugo dropped (`_internal/google_analytics_async.html`, `_internal/disqus.html`) in favour of the current embedded partials. Configure them with `[services.googleAnalytics]` and `[services.disqus]`.
+> - Social links now live under `[params.social]` instead of the removed top-level `[social]`.
+> - Replaced removed or deprecated calls: `.Site.Author`, `.Site.LastChange`, `.Site.Languages`, `.Language.LanguageName`, `.Site.Data`, and `.Render "date"` in the JSON search index.
+> - Fixed post summaries being printed as escaped HTML in lists.
+> - The main stylesheet ships **precompiled** (`assets/css/main.css`). It is generated from `assets/scss/main.scss` by `tools/scss2css.py`, a small converter written for this file only, so the theme no longer needs Hugo Extended or Dart Sass. If you edit the SCSS, run `python3 tools/scss2css.py assets/scss/main.scss assets/css/main.css`. The output has not been compared against an official Sass build; report anything that looks off.
+> - Dates use Hugo's localized formats (`:date_long`).
+> - Added Catalan (`ca`) translation.
+> - Pagination is configured with `[pagination] pagerSize` in your site config.
+
+
 **Hugo Future Imperfect** *Slim* is a theme based on [jpescador's](https://github.com/jpescador/)
 port of [HTML5 UP's theme](http://html5up.net/future-imperfect) by the same name.
 The goal of this theme is to continue the development of the [original theme](https://github.com/jpescador/hugo-future-imperfect).

@@ -2,7 +2,7 @@
   {{- if $index -}}, {{- end -}}
     {
     "title": "{{ .Title | plainify }}",
-    "date": "{{ .Render "date" }}",
+    "date": "{{ .Date | time.Format ":date_long" }}",
     "description": "{{ .Params.description | plainify }}",
     "body": {{ .Content | plainify | jsonify }},
     "ref": "{{ .RelPermalink | plainify }}"

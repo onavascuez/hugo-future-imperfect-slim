@@ -4,19 +4,25 @@ baseurl                 = "https://hugo-future-imperfect-slim.netlify.app/"
 DefaultContentLanguage  = "en"
 title                   = "Hugo Future Imperfect Slim"
 theme                   = "hugo-future-imperfect-slim"
-paginate                = 3
-disqusShortname         = ""
-googleAnalytics         = ""
 pluralizeListTitles     = false
 disableLanguages        = []
+
+[pagination]
+  pagerSize             = 3
+
+# Google Analytics and Disqus are configured the current Hugo way:
+# [services.googleAnalytics]
+#   id = "G-XXXXXXXXXX"
+# [services.disqus]
+#   shortname = "your-shortname"
 
 [markup.goldmark.renderer]
   unsafe                = true
 
 [module]
   [module.hugoVersion]
-  extended              = true
-  min                   = "0.62.0"
+  extended              = false
+  min                   = "0.158.0"
 
 [outputs]
   home                  = ["html", "json", "rss"]
@@ -137,13 +143,13 @@ disableLanguages        = []
 [Languages]
 
   [Languages.en]
-    LanguageCode        = "en"
-    LanguageName        = "English"
+    locale              = "en"
+    label               = "English"
     weight              = 1
 
   [Languages.fr]
-    LanguageCode        = "fr"
-    LanguageName        = "Français"
+    locale              = "fr"
+    label               = "Français"
     title               = "Hugo Future Imperfect Slim en français"
     description         = "Un thème par HTML5 UP, porté par Julio Pescador. Simplifié et amélioré par Patrick Collins. Multilingue par StatnMap. Propulsé par Hugo."
     weight              = 2
@@ -184,8 +190,8 @@ disableLanguages        = []
       weight            = 6
 
   [Languages.pl]
-    LanguageCode        = "pl"
-    LanguageName        = "Polski"
+    locale              = "pl"
+    label               = "Polski"
     title               = "Hugo Future Imperfect Slim po polsku"
     description         = "Motyw HTML5 UP, przeniesiony przez Julio Pescadora i wzbogacony przez Patricka Collinsa. Wielojęzyczny przez StatnMap. Zasilany przez Hugo."
     weight              = 2
@@ -226,8 +232,8 @@ disableLanguages        = []
       weight            = 6
 
   [Languages.pt]
-    LanguageCode        = "pt"
-    LanguageName        = "Português"
+    locale              = "pt"
+    label               = "Português"
     title               = "Hugo Future Imperfect Slim em português"
     description         = "Um tema do HTML5 UP, portado por Julio Pescadora e reduzido por Patrick Collins. Multilíngue por StatnMap. Feito com Hugo."
     weight              = 4
@@ -268,33 +274,33 @@ disableLanguages        = []
       weight            = 6
 
   [Languages.de]
-    LanguageCode        = "de"
-    LanguageName        = "Deutsche"
+    locale              = "de"
+    label               = "Deutsche"
     weight              = 5
 
   [Languages.es]
-    LanguageCode        = "es"
-    LanguageName        = "Española"
+    locale              = "es"
+    label               = "Española"
     weight              = 6
 
   [Languages.zh-CN]
-    LanguageCode        = "zh-CN"
-    LanguageName        = "中文 (简体)"
+    locale              = "zh-CN"
+    label               = "中文 (简体)"
     weight              = 7
 
   [Languages.zh-TW]
-    LanguageCode        = "zh-TW"
-    LanguageName        = "中文 (正體)"
+    locale              = "zh-TW"
+    label               = "中文 (正體)"
     weight              = 8
 
   [Languages.ja]
-    LanguageCode        = "ja"
-    LanguageName        = "日本語"
+    locale              = "ja"
+    label               = "日本語"
     weight              = 9
 
   [Languages.nl]
-    LanguageCode        = "nl"
-    LanguageName        = "Nederlands"
+    locale              = "nl"
+    label               = "Nederlands"
     weight              = 10
 
     [[Languages.nl.menu.main]]
@@ -332,7 +338,7 @@ disableLanguages        = []
       pre               = "<i class='far fa-envelope'></i>"
       weight            = 6
 
-[social]
+[params.social]
   # Coding Communities
   github                = "pacollins/hugo-future-imperfect-slim"
   gitlab                = ""

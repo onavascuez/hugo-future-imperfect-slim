@@ -1,0 +1,83 @@
+# Format
+[date_format]
+  other = "2 January 2006"
+
+# Sidebar
+[recent_posts]
+  other = "Últimes entrades"
+[see_more]
+  other = "Veure'n més"
+[learn_more]
+  other = "Més informació"
+[attribution]
+  other = "Tema: <a href='https://github.com/pacollins/hugo-future-imperfect-slim' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>Adaptat de <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | Fet amb <a href='https://gohugo.io/' target='_blank' rel='noopener'>Hugo</a>"
+
+# Sections
+[about]
+  other = "Quant a"
+[contact]
+  other = "Contacte"
+[contact_replies]
+  one = "Normalment responem en 1 hora."
+  other = "Normalment responem en {{ .Count }} hores."
+[blog]
+  other = "Blog"
+[categories]
+  one = "Categoria"
+  other = "Categories"
+[tags]
+  one = "Etiqueta"
+  other = "Etiquetes"
+[next_page]
+  other = "Pàgina següent"
+[previous_page]
+  other = "Pàgina anterior"
+
+# Post
+[reading_time]
+  one = "1 minut de lectura"
+  other = "{{ .Count }} minuts de lectura"
+[read_more]
+  other = "Continua llegint"
+[share_post]
+  other = "Comparteix aquesta entrada"
+[check_out]
+  other = "Mira aquesta entrada de"
+[say_something]
+  other = "Digues alguna cosa"
+[comments]
+  other = "Comentaris"
+[nothing_yet]
+  other = "Encara res."
+[reply]
+  other = "Respon"
+[error_msg]
+  other = "Hi ha hagut un error en enviar el comentari. Comprova que tots els camps estiguin omplerts i torna-ho a provar."
+[success_msg]
+  other = "Gràcies pel comentari! Es veurà al lloc un cop aprovat."
+
+# Form
+[form_name]
+  other = "El teu nom"
+[form_email]
+  other = "El teu correu electrònic"
+[form_website]
+  other = "La teva web"
+[form_subject]
+  other = "Assumpte"
+[form_body]
+  other = "Missatge"
+[reset]
+  other = "Esborra"
+[submitted]
+  other = "Enviat"
+[submit]
+  other = "Envia"
+
+# 404
+[404_pagenotfound]
+  other = "Pàgina no trobada"
+[404_sorry]
+  other = "Aquesta pàgina no existeix."
+[404_back]
+  other = "Torna"

@@ -37,7 +37,8 @@
         {{- range $assets.styles -}}
           {{- $cssSlice = $cssSlice | append (resources.Get . ) -}}
         {{- end -}}
-        {{- $cssSlice = $cssSlice | append (resources.Get "scss/main.scss" | toCSS) -}}
+        {{- /* The main stylesheet ships precompiled (assets/css/main.css, built from assets/scss/main.scss with tools/scss2css.py), so no Sass transpiler is needed */ -}}
+        {{- with resources.Get "css/main.css" }}{{ $cssSlice = $cssSlice | append . }}{{ end -}}
         {{- $css := $cssSlice | resources.Concat "css/bundle.css" | minify | fingerprint -}}
         <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
         {{- if eq (i18n "letter_direction") "RTL" -}}
@@ -55,6 +56,6 @@
   {{- if .Params.Author -}}
     {{- .Scratch.Set "Author" .Params.Author -}}
   {{- else -}}
-    {{- .Scratch.Set "Author" .Author -}}
+    {{- .Scratch.Set "Author" site.Params.meta.author -}}
   {{ end }}
 </head>

@@ -34,7 +34,6 @@ Hugo est livré avec plusieurs [Shortcodes intégrés] (https://gohugo.io/conten
 
 ## Twitter Shortcode Simple
 
-{{< twitter_simple 1085870671291310081 >}}
 
 <br>
 

@@ -1,6 +1,6 @@
-{{ if .Site.DisqusShortname }}
+{{ if site.Config.Services.Disqus.Shortname }}
   <div class='post'>
-    {{ template "_internal/disqus.html" . }}
+    {{ partial "disqus.html" . }}
   </div>
 
 {{ else if .Site.Params.utterances.enabled }}
@@ -67,9 +67,9 @@
     <div class='comments-container'>
       <h2>{{ i18n "comments" }}</h2>
 
-      {{- if .Site.Data.comments -}}
+      {{- if hugo.Data.comments -}}
         {{/* $comments collects comment files for the current blog entry */}}
-        {{- $comments := index $.Site.Data.comments $entryId -}}
+        {{- $comments := index hugo.Data.comments $entryId -}}
         {{- if not $comments -}}
           <p>{{ i18n "nothing_yet" }}</p>
         {{- else -}}
