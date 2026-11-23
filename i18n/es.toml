@@ -83,3 +83,9 @@
   other = "Lo sentimos, la página que estás buscando no existe."
 [404_back]
   other = "Volver"
+
+# Search
+[search_no_results]
+  other = "No se ha encontrado nada."
+[search_error]
+  other = "No se ha podido cargar el índice de búsqueda."

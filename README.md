@@ -27,6 +27,7 @@
 >
 > New in this fork:
 > - **Featured posts in the sidebar** (optional). Set `featuredAmount` under `[params.sidebar]` to show that many featured posts above the recent ones. A post is featured when its front matter has `pinned = true`; change the parameter name with `featuredParam`. `recentExcludesFeatured = true` keeps featured posts out of the recent list.
+> - **Search:** the index (`index.json`) is now requested the first time the search is opened, not on every page load. Accents are ignored (`mon` finds `món`), words are also split on apostrophes (`aigua` finds `l'aigua`), the "no results" message is shown (it never was), and the messages are translatable (`search_no_results`, `search_error`). Lunr still applies English stemming and stop words.
 > - `[params.sidebar] hideViewMore = true` hides the "See More" button, and `aboutLink` sets where the about block's button points (it was hardcoded to `about`).
 
 

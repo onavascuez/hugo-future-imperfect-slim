@@ -48,40 +48,58 @@ var idx = null;         // Lunr index
 var resultDetails = []; // Will hold the data for the search results (titles and summaries)
 var $searchResults;     // The element on the page holding search results
 var $searchInput;       // The search box element
+var searchIndexState = 'idle'; // idle | loading | ready | error
+var searchMessages = {
+  noResults: {{ i18n "search_no_results" | default "No results found." | jsonify }},
+  error: {{ i18n "search_error" | default "Could not load the search index." | jsonify }}
+};
 
-window.onload = function () {
-  // Set up for an Ajax call to request the JSON data file that is created by
-  // Hugo's build process, with the template we added above
+// Ignore accents, so "mon" finds "món" and "cami" finds "camí". It runs before
+// the trimmer, which would otherwise strip accented letters from word edges.
+var foldDiacritics = function (token) {
+  return token.update(function (str) {
+    return str.normalize ? str.normalize('NFD').replace(/[̀-ͯ]/g, '') : str;
+  });
+};
+lunr.Pipeline.registerFunction(foldDiacritics, 'foldDiacritics');
+
+// Also split words on apostrophes, so "l'aigua" can be found as "aigua".
+lunr.tokenizer.separator = /[\s\-'’]+/;
+
+function searchMessage(text) {
+  $searchResults.innerHTML = '<article class="mini-post"><main><p>' + text + '</p></main></article>';
+}
+
+// The index (index.json, built by Hugo) is only requested the first time the
+// search is opened, not on every page load.
+function loadSearchIndex() {
+  if (searchIndexState != 'idle') { return; }
+  searchIndexState = 'loading';
+
   var request = new XMLHttpRequest();
-  var query = '';
-
-  // Get dom objects for the elements we'll be interacting with
-  $searchResults = document.getElementById('search-results');
-  $searchInput   = document.getElementById('search-input');
-
   var lang = document.documentElement.lang;
   var pathArgs = ["{{ replaceRE "/$" "" .BaseURL }}", "index.json"];
   if (lang != "{{ .Language.Lang }}") {
     pathArgs.splice(1, 0, lang);
   }
-  path = pathArgs.join("/");
-  request.open("GET", path, true); // Request the JSON file created during build
+  var path = pathArgs.join("/");
+
+  request.open("GET", path, true);
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
-      // Success response received in requesting the index.json file
       var documents = JSON.parse(request.responseText);
 
-      // Build the index so Lunr can search it.  The `ref` field will hold the URL
-      // to the page/post.  title, excerpt, and body will be fields searched.
+      // Build the index so Lunr can search it. The `ref` field holds the URL
+      // of the page; title, description and body are the fields searched.
       idx = lunr(function () {
+        this.pipeline.before(lunr.trimmer, foldDiacritics);
+        this.searchPipeline.before(lunr.stemmer, foldDiacritics);
+
         this.ref('ref');
         this.field('title');
-        this.field('data');
         this.field('description');
         this.field('body');
 
-        // Loop through all the items in the JSON file and add them to the index
-        // so they can be searched.
         documents.forEach(function(doc) {
             this.add(doc);
             resultDetails[doc.ref] = {
@@ -91,60 +109,69 @@ window.onload = function () {
             };
         }, this);
       });
+      searchIndexState = 'ready';
+      // Run the search for whatever was typed while the index was loading
+      runSearch();
     } else {
-      $searchResults.innerHTML = '<article class="mini-post"><main><p>Error loading search results...</p></main></a></article>';
+      searchIndexState = 'error';
+      searchMessage(searchMessages.error);
     }
   };
-
   request.onerror = function() {
-    $searchResults.innerHTML = '<article class="mini-post"><main><p>Error loading search results...</p></main></a></article>';
+    searchIndexState = 'error';
+    searchMessage(searchMessages.error);
   };
-
-  // Send the request to load the JSON
   request.send();
-
-  // Register handler for the search input field
-  registerSearchHandler();
-};
-
-function registerSearchHandler() {
-  $searchInput.oninput = function(event) {
-    var query = event.target.value;
-    var results = search(query);  // Perform the search
-
-    // Render search results
-    renderSearchResults(results);
-
-    // Remove search results if the user empties the search phrase input field
-    if ($searchInput.value == '') {
-      $searchResults.innerHTML = '';
-    }
-  }
 }
 
-function renderSearchResults(results) {
-  // Create a list of results
-  var container = document.createElement('div');
-  if (results.length > 0) {
-    results.forEach(function(result) {
-      // Create result item
-      container.innerHTML += '<article class="mini-post"><a href="' + result.ref + '"><header><h2>' + resultDetails[result.ref].title + '</h2><time class="published" datetime="">' + resultDetails[result.ref].date + '</time></header><main><p>' + resultDetails[result.ref].description + '</p></main></a></article>';
-    });
-
-    // Remove any existing content so results aren't continually added as the user types
-    while ($searchResults.hasChildNodes()) {
-      $searchResults.removeChild(
-        $searchResults.lastChild
-      );
-    }
-  } else {
-    $searchResults.innerHTML = '<article class="mini-post"><main><p>No Results Found...</p></main></a></article>';
+function runSearch() {
+  var query = $searchInput.value.replace(/^\s+|\s+$/g, '');
+  if (query == '') {
+    $searchResults.innerHTML = '';
+    return;
   }
+  if (searchIndexState == 'error') {
+    searchMessage(searchMessages.error);
+    return;
+  }
+  if (searchIndexState != 'ready') {
+    loadSearchIndex();
+    return;
+  }
+  renderSearchResults(search(query));
+}
 
-  // Render the list
-  $searchResults.innerHTML = container.innerHTML;
+window.addEventListener('load', function () {
+  $searchResults = document.getElementById('search-results');
+  $searchInput   = document.getElementById('search-input');
+  if (!$searchResults || !$searchInput) { return; }
+
+  $searchInput.addEventListener('focus', loadSearchIndex);
+  $searchInput.addEventListener('input', runSearch);
+  var toggles = document.querySelectorAll('.search-toggle');
+  for (var i = 0; i < toggles.length; i++) {
+    toggles[i].addEventListener('click', loadSearchIndex);
+  }
+});
+
+function renderSearchResults(results) {
+  if (results.length == 0) {
+    searchMessage(searchMessages.noResults);
+    return;
+  }
+  var html = '';
+  results.forEach(function(result) {
+    var details = resultDetails[result.ref];
+    html += '<article class="mini-post"><a href="' + result.ref + '"><header><h2>' + details.title + '</h2><time class="published" datetime="">' + details.date + '</time></header><main><p>' + details.description + '</p></main></a></article>';
+  });
+  $searchResults.innerHTML = html;
 }
 
 function search(query) {
-  return idx.search(query);
+  try {
+    return idx.search(query);
+  } catch (e) {
+    // Lunr throws on malformed queries (for example a lone "+" or ":")
+    return [];
+  }
 }

@@ -83,3 +83,9 @@
   other = "Aquesta pàgina no existeix."
 [404_back]
   other = "Torna"
+
+# Search
+[search_no_results]
+  other = "No s'ha trobat res."
+[search_error]
+  other = "No s'ha pogut carregar l'índex de cerca."
