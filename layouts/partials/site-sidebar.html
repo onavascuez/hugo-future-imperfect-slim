@@ -1,10 +1,19 @@
 <section id="site-sidebar">
-  {{ if gt .Site.Params.sidebar.postAmount 0 }}
-    <section id="recent-posts">
+  {{- $posts := where site.RegularPages "Type" "in" site.Params.mainSections }}
+  {{- /* Featured posts: optional block above the recent posts. A post is featured
+         when the front matter parameter named by sidebar.featuredParam is true. */ -}}
+  {{- $featuredAmount := .Site.Params.sidebar.featuredAmount | default 0 }}
+  {{- $featuredParam := .Site.Params.sidebar.featuredParam | default "pinned" }}
+  {{- $featured := slice }}
+  {{- if gt $featuredAmount 0 }}
+    {{- $featured = first $featuredAmount (where $posts (printf "Params.%s" $featuredParam) true) }}
+  {{- end }}
+  {{ with $featured }}
+    <section id="featured-posts">
       <header>
-        <h1>{{ i18n "recent_posts" }}</h1>
+        <h1>{{ i18n "featured_posts" | default "Featured Posts" }}</h1>
       </header>
-      {{ range first (.Site.Params.sidebar.postAmount | default 5) (where site.RegularPages "Type" "in" site.Params.mainSections) }}
+      {{ range . }}
       <article class="mini-post">
           {{ .Render "featured" }}
         <header>
@@ -13,7 +22,28 @@
         </header>
       </article>
       {{ end }}
-      {{ if ge (len (where site.RegularPages "Type" "in" site.Params.mainSections)) (.Site.Params.sidebar.postAmount | default 5) }}
+    </section>
+  {{ end }}
+
+  {{ if gt .Site.Params.sidebar.postAmount 0 }}
+    {{- $recent := $posts }}
+    {{- if and $featured .Site.Params.sidebar.recentExcludesFeatured }}
+      {{- $recent = complement $featured $posts }}
+    {{- end }}
+    <section id="recent-posts">
+      <header>
+        <h1>{{ i18n "recent_posts" }}</h1>
+      </header>
+      {{ range first (.Site.Params.sidebar.postAmount | default 5) $recent }}
+      <article class="mini-post">
+          {{ .Render "featured" }}
+        <header>
+          <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+          <time class="published" datetime="{{ .Date }}">{{ .Render "date" }}</time>
+        </header>
+      </article>
+      {{ end }}
+      {{ if and (not .Site.Params.sidebar.hideViewMore) (ge (len $recent) (.Site.Params.sidebar.postAmount | default 5)) }}
         <footer>
           <a href="{{ ( .Site.Params.viewMorePostsLink | default "blog") | relLangURL }}" class="button">{{ i18n "see_more" }}</a>
         </footer>
@@ -47,7 +77,7 @@
       </header>
       <p>{{ .Site.Params.sidebar.about | safeHTML }}</p>
       <footer>
-        <a href="{{ "about" | relLangURL }}" class="button">{{ i18n "learn_more" }}</a>
+        <a href="{{ (.Site.Params.sidebar.aboutLink | default "about") | relLangURL }}" class="button">{{ i18n "learn_more" }}</a>
       </footer>
     </section>
   {{ end }}

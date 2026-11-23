@@ -78,6 +78,17 @@ disableLanguages        = []
     postAmount          = 5
     categories          = true
     categoriesByCount   = true
+    # Optional "Featured Posts" block above the recent posts. A post is
+    # featured when its front matter has `pinned = true` (or the parameter
+    # named by featuredParam). 0 disables the block.
+    featuredAmount          = 0
+    featuredParam           = "pinned"
+    # Leave featured posts out of the recent posts list
+    recentExcludesFeatured  = false
+    # Hide the "See More" button under the recent posts
+    hideViewMore            = false
+    # Page the "Learn More" button of the about block links to
+    aboutLink               = "about"
 
   [params.footer]
     rssFooter           = true

@@ -12,6 +12,10 @@
 > - Dates use Hugo's localized formats (`:date_long`).
 > - Added Catalan (`ca`) translation.
 > - Pagination is configured with `[pagination] pagerSize` in your site config.
+>
+> New in this fork:
+> - **Featured posts in the sidebar** (optional). Set `featuredAmount` under `[params.sidebar]` to show that many featured posts above the recent ones. A post is featured when its front matter has `pinned = true`; change the parameter name with `featuredParam`. `recentExcludesFeatured = true` keeps featured posts out of the recent list.
+> - `[params.sidebar] hideViewMore = true` hides the "See More" button, and `aboutLink` sets where the about block's button points (it was hardcoded to `about`).
 
 
 **Hugo Future Imperfect** *Slim* is a theme based on [jpescador's](https://github.com/jpescador/)

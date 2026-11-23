@@ -3,6 +3,8 @@
   other = "02-01-2006"
 
 # Sidebar
+[featured_posts]
+  other = "Articles à la une"
 [recent_posts]
   other = "Posts Récents"
 [see_more]
