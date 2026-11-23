@@ -13,21 +13,25 @@
 > - Added Catalan (`ca`) translation.
 > - Pagination is configured with `[pagination] pagerSize` in your site config.
 >
-> **Closer to the original design.** Hugo Future Imperfect Slim departs from HTML5 UP's [Future Imperfect](https://html5up.net/uploads/demos/future-imperfect/) in spacing, shadows and alignment. This fork brings the layout back to the original values:
+> **Closer to the original design.** Hugo Future Imperfect Slim departs from HTML5 UP's [Future Imperfect](https://html5up.net/uploads/demos/future-imperfect/) in spacing, shadows and alignment. This fork brings the layout back to the original values, on wide screens, tablets and phones:
 > - header without drop shadow, only its 1px bottom border
-> - posts with a 1px border, 3em of inner spacing and 3em between them, and no maximum width
+> - posts with a 1px border, the original inner spacing (3em, and 1.5em on the sides on phones) and no maximum width
 > - small uppercase subtitle under the post title, and a 17em column for the date
 > - featured image inside the post padding instead of edge to edge
-> - compact "read more" button on the left, with categories and tags on the same line on the right, without icons
-> - left-aligned intro and sidebar, with a larger site title
+> - categories and tags on one line, without icons. On wide screens the "read more" button sits on the left with them on its right; on phones they go centered above a full-width button
+> - left-aligned intro and sidebar on wide screens, with a larger site title
 > - body text in the original mid grey, left-aligned instead of justified
-> - original page padding
+> - original page padding, and the same gutter for every block on phones and tablets
+> - on phones, previous and next buttons are stacked and show the post titles
 >
-> These rules live in one section at the end of `assets/scss/main.scss` ("Closer to the original design"). Delete that section to get the Slim look back. Small screens keep the Slim layout.
+> These rules live in one section at the end of `assets/scss/main.scss` ("Closer to the original design"). Delete that section to get the Slim look back.
+>
+> Fixed along the way: `intro.hideWhenSingleColumn` had no effect, and long unbreakable content could widen the whole page on phones.
 >
 > New in this fork:
 > - **Featured posts in the sidebar** (optional). Set `featuredAmount` under `[params.sidebar]` to show that many featured posts above the recent ones. A post is featured when its front matter has `pinned = true`; change the parameter name with `featuredParam`. `recentExcludesFeatured = true` keeps featured posts out of the recent list.
 > - **Search:** the index (`index.json`) is now requested the first time the search is opened, not on every page load. Accents are ignored (`mon` finds `món`), words are also split on apostrophes (`aigua` finds `l'aigua`), the "no results" message is shown (it never was), and the messages are translatable (`search_no_results`, `search_error`). Words also match as the beginning of a word, so `check` finds `checklist` while typing, and matches in the title rank first. Lunr only knows English stop words: add those of your language with `[params.search] stopWords = ["de", "la", ...]`. Stemming is still English.
+> - The "Search" and "Share" labels of the menu are translatable (`search`, `share`).
 > - `[params.sidebar] hideViewMore = true` hides the "See More" button, and `aboutLink` sets where the about block's button points (it was hardcoded to `about`).
 
 

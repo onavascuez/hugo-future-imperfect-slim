@@ -84,6 +84,12 @@
 [404_back]
   other = "Volver"
 
+# Header menu
+[search]
+  other = "Buscar"
+[share]
+  other = "Compartir"
+
 # Search
 [search_no_results]
   other = "No se ha encontrado nada."

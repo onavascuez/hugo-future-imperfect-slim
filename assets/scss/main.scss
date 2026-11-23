@@ -1813,18 +1813,19 @@ figcaption {
    the original values (html5up.net/uploads/demos/future-imperfect/):
 
    - header without drop shadow, only its 1px bottom border
-   - posts with a 1px border, 3em of inner spacing and 3em between them,
-     no max-width
+   - posts with a 1px border, the original inner spacing (3em, 1.5em on the
+     sides on phones) and no max-width
    - small uppercase subtitle under the post title, 17em meta column
    - featured image inside the post padding
-   - compact "read more" button on the left, categories and tags on the
-     same line on the right, without icons
-   - left-aligned intro and sidebar, larger site title
+   - categories and tags on one line, without icons; on wide screens the
+     "read more" button sits on the left with them on its right, on phones
+     they go centered above a full-width button
+   - left-aligned intro and sidebar on wide screens, larger site title
    - body text in the original mid grey, not justified
-   - original page padding
+   - original page padding, and the same gutter for every block on phones
+   - on phones, previous/next buttons stacked and showing the post titles
 
-   Small screens keep the Slim layout. Remove this section to get the Slim
-   look back.
+   Remove this section to get the Slim look back.
    ========================================================================== */
 
 $original-text-color: hsl(0, 0%, 39%);
@@ -1843,6 +1844,49 @@ body, input, select, textarea {
   > p {
     text-align: left;
   }
+  > header .title {
+    h1,
+    h2 {
+      font-weight: 900;
+    }
+    p {
+      font-family: $header-font;
+      font-size: 0.7em;
+      letter-spacing: 0.25em;
+      line-height: 2.5;
+      margin: -1em 0 0;
+      text-transform: uppercase;
+    }
+  }
+  > header .meta time {
+    font-size: 1.17em;
+    white-space: nowrap;
+  }
+  .content > .image {
+    padding-bottom: 40.6%;
+  }
+  footer .stats {
+    flex-direction: row;
+    ul {
+      flex-wrap: nowrap;
+      margin: 0;
+      max-width: none;
+      &::before {
+        display: none;
+      }
+      li,
+      & + ul li:first-child {
+        border-left: $primary-border;
+        margin-left: 1.5em;
+        padding-left: 1.5em;
+      }
+      &:first-child li:first-child {
+        border-left: 0;
+        margin-left: 0;
+        padding-left: 0;
+      }
+    }
+  }
 }
 
 .mini-post {
@@ -1856,6 +1900,112 @@ body, input, select, textarea {
     time {
       display: block;
     }
+  }
+}
+
+/* intro.hideWhenSingleColumn had no effect: #site-intro's own display won over
+   the helper class */
+#site-intro.hidden-single-column {
+  display: none;
+  @include for-laptop-up {
+    @include display-flex;
+  }
+}
+
+/* While there is a single column, do not let long unbreakable content (a
+   post title in a button, a code block) widen the whole page */
+@media (max-width: 1023px) {
+  #wrapper {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Phones: one column */
+@media (max-width: 767px) {
+  #site-main {
+    padding-top: 1.5em;
+  }
+  #site-intro {
+    margin-top: 0;
+    padding: 0 1.5em 1.5em;
+  }
+  .post {
+    border-left: 0;
+    border-right: 0;
+    margin: 0 0 2em;
+    padding: 3em 1.5em 0.5em;
+    > header {
+      margin: -3em -1.5em 2.5em -1.5em;
+      .title {
+        font-size: 1em;
+        padding: 3em 1.5em 0;
+        width: auto;
+        h1,
+        h2 {
+          font-size: 1.25em;
+          margin: 0 0 1em;
+        }
+      }
+      /* .meta is set at 0.6em, hence the values */
+      .meta {
+        padding: 3.5em 2.5em 4em;
+      }
+    }
+    .content > .image {
+      margin: 0 0 2em;
+    }
+    footer {
+      flex-direction: column-reverse;
+      .button {
+        margin: 0 0 1.5em;
+        width: 100%;
+      }
+      .stats {
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 0 0 1.5em;
+      }
+    }
+  }
+  #site-sidebar > * {
+    margin: 2em 1.5em 0;
+    padding-top: 2em;
+  }
+  #site-footer {
+    margin: 2em 1.5em;
+    padding-top: 2em;
+  }
+  .pagination {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 0 1.5em;
+    .button {
+      margin: 0 0 1em;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: auto;
+    }
+    .left span,
+    .right span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+/* Tablets: still one column, with the page gutter around it */
+@media (min-width: 768px) and (max-width: 1023px) {
+  #wrapper {
+    padding: 1.5em;
+  }
+  #site-sidebar > * {
+    margin: 3em 0 0;
+  }
+  #site-footer {
+    margin: 3em 0;
   }
 }
 
@@ -1877,16 +2027,7 @@ body, input, select, textarea {
         h1,
         h2 {
           font-size: 1.5em;
-          font-weight: 900;
           margin: 0 0 1em;
-        }
-        p {
-          font-family: $header-font;
-          font-size: 0.7em;
-          letter-spacing: 0.25em;
-          line-height: 2.5;
-          margin: -1em 0 0;
-          text-transform: uppercase;
         }
       }
       /* 17em in the original; .meta is set at 0.6em here, hence the values */
@@ -1895,10 +2036,6 @@ body, input, select, textarea {
         min-width: 28.34em;
         padding: 6.25em 5em 2.9em;
         width: 28.34em;
-        time {
-          font-size: 1.17em;
-          white-space: nowrap;
-        }
         p {
           margin: 0.75em 0 0;
         }
@@ -1906,7 +2043,6 @@ body, input, select, textarea {
     }
     .content > .image {
       margin: 0 0 3em;
-      padding-bottom: 40.6%;
     }
     footer {
       align-items: center;
@@ -1919,30 +2055,23 @@ body, input, select, textarea {
         width: auto;
       }
       .stats {
-        flex-direction: row;
         justify-content: flex-end;
         margin: 0 0 2em auto;
-        ul {
-          flex-wrap: nowrap;
-          margin: 0;
-          max-width: none;
-          &::before {
-            display: none;
-          }
-          li,
-          & + ul li:first-child {
-            border-left: $primary-border;
-            margin-left: 2em;
-            padding-left: 2em;
-          }
-          &:first-child li:first-child {
-            border-left: 0;
-            margin-left: 0;
-            padding-left: 0;
-          }
+        ul li,
+        ul + ul li:first-child {
+          margin-left: 2em;
+          padding-left: 2em;
+        }
+        ul:first-child li:first-child {
+          margin-left: 0;
+          padding-left: 0;
         }
       }
     }
+  }
+  .pagination {
+    max-width: none;
+    padding: 0;
   }
 }
 

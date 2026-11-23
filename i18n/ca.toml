@@ -84,6 +84,12 @@
 [404_back]
   other = "Torna"
 
+# Header menu
+[search]
+  other = "Cerca"
+[share]
+  other = "Comparteix"
+
 # Search
 [search_no_results]
   other = "No s'ha trobat res."
