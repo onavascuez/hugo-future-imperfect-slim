@@ -54,17 +54,27 @@ var searchMessages = {
   error: {{ i18n "search_error" | default "Could not load the search index." | jsonify }}
 };
 
+function foldText(str) {
+  return str.normalize ? str.normalize('NFD').replace(/[̀-ͯ]/g, '') : str;
+}
+
 // Ignore accents, so "mon" finds "món" and "cami" finds "camí". It runs before
 // the trimmer, which would otherwise strip accented letters from word edges.
 var foldDiacritics = function (token) {
-  return token.update(function (str) {
-    return str.normalize ? str.normalize('NFD').replace(/[̀-ͯ]/g, '') : str;
-  });
+  return token.update(foldText);
 };
 lunr.Pipeline.registerFunction(foldDiacritics, 'foldDiacritics');
 
 // Also split words on apostrophes, so "l'aigua" can be found as "aigua".
 lunr.tokenizer.separator = /[\s\-'’]+/;
+
+// Extra stop words for the site language (Lunr only knows the English ones).
+// Set them in the site config: [params.search] stopWords = ["de", "la", ...]
+var extraStopWords = {{ .Params.search.stopWords | default slice | jsonify }}.map(function (word) {
+  return foldText(String(word).toLowerCase());
+});
+var extraStopWordFilter = lunr.generateStopWordFilter(extraStopWords);
+lunr.Pipeline.registerFunction(extraStopWordFilter, 'extraStopWordFilter');
 
 function searchMessage(text) {
   $searchResults.innerHTML = '<article class="mini-post"><main><p>' + text + '</p></main></article>';
@@ -93,11 +103,12 @@ function loadSearchIndex() {
       // of the page; title, description and body are the fields searched.
       idx = lunr(function () {
         this.pipeline.before(lunr.trimmer, foldDiacritics);
+        this.pipeline.after(lunr.trimmer, extraStopWordFilter);
         this.searchPipeline.before(lunr.stemmer, foldDiacritics);
 
         this.ref('ref');
-        this.field('title');
-        this.field('description');
+        this.field('title', { boost: 10 });
+        this.field('description', { boost: 3 });
         this.field('body');
 
         documents.forEach(function(doc) {
@@ -167,11 +178,32 @@ function renderSearchResults(results) {
   $searchResults.innerHTML = html;
 }
 
+// Every word is searched as a whole word (through Lunr's pipeline, so stemming
+// applies) and also as the beginning of a word, so "check" finds "checklist"
+// while typing. Whole-word matches rank higher. Lunr's query operators are
+// dropped. Stop words are dropped too, except the last word, which may be a
+// longer word still being typed ("des" on the way to "desert").
+function isStopWord(term) {
+  return extraStopWords.indexOf(term) != -1 || lunr.stopWordFilter(term) === undefined;
+}
+
 function search(query) {
+  var terms = foldText(query.toLowerCase())
+    .split(lunr.tokenizer.separator)
+    .map(function (term) { return term.replace(/[^a-z0-9À-￿]/g, ''); })
+    .filter(function (term) { return term != ''; });
+  var parts = [];
+  terms.forEach(function (term, i) {
+    if (isStopWord(term)) {
+      if (i == terms.length - 1) { parts.push(term + '*'); }
+    } else {
+      parts.push(term + '^10 ' + term + '*');
+    }
+  });
+  if (parts.length == 0) { return []; }
   try {
-    return idx.search(query);
+    return idx.search(parts.join(' '));
   } catch (e) {
-    // Lunr throws on malformed queries (for example a lone "+" or ":")
     return [];
   }
 }

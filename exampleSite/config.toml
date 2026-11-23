@@ -90,6 +90,10 @@ disableLanguages        = []
     # Page the "Learn More" button of the about block links to
     aboutLink               = "about"
 
+  [params.search]
+    # Stop words of the site language, ignored by the search. Lunr already
+    # knows the English ones.
+    stopWords           = []
   [params.footer]
     rssFooter           = true
     socialFooter        = true
