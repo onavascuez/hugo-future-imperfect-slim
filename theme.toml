@@ -1,9 +1,9 @@
 name = "Hugo Future Imperfect Slim"
 license = "Creative Commons Attribution 3.0 Unported"
-licenselink = "https://github.com/pacollins/hugo-future-imperfect-slim/blob/master/LICENSE.md"
-description = "Future Imperfect Theme - Slimmed Down"
-homepage = "https://github.com/pacollins/hugo-future-imperfect-slim"
-demosite = "https://hugo-future-imperfect-slim.netlify.app/"
+licenselink = "https://github.com/onavascuez/hugo-future-imperfect-slim/blob/master/LICENSE.md"
+description = "Future Imperfect Theme - Slimmed Down. Fork that builds with current Hugo and stays close to the original HTML5 UP design"
+homepage = "https://github.com/onavascuez/hugo-future-imperfect-slim"
+min_version = "0.158.0"
 tags = ["Academic", "Academicons", "Blog", "Contact Form", "CSS Grid", "Disqus",
         "Fancybox", "Font Awesome", "Gallery", "Google Analytics", "Google News",
         "Highlight.js", "Jquery", "Lunr.js", "Multilingual", "Netlify",
@@ -11,15 +11,15 @@ tags = ["Academic", "Academicons", "Blog", "Contact Form", "CSS Grid", "Disqus",
         "Twitter Cards", "Utteranc.es"]
 features = ["Academicons v1.8.6", "Disqus", "Fancybox v3.5.7", "Font Awesome v5.13.0",
             "Google Analytics", "Google News", "Highlight.js v10.6.0", "Jquery v3.5.1",
-            "Lunr.js v2.3.8", "Netlify", "Open Graph", "Staticman", "Theme Update Notification",
+            "Lunr.js v2.3.8", "Netlify", "Open Graph", "Staticman",
             "Twitter Cards", "Utteranc.es"]
 
 [author]
   name = "Patrick Collins"
   homepage = "https://pacollins.com"
 
-# If porting an existing theme
+# Forked from the archived Hugo Future Imperfect Slim, by Patrick Collins
 [original]
-  name = "Future Imperfect"
-  homepage = "https://github.com/jpescador/hugo-future-imperfect"
-  repo = "https://github.com/jpescador/hugo-future-imperfect"
+  name = "Hugo Future Imperfect Slim"
+  homepage = "https://github.com/pacollins/hugo-future-imperfect-slim"
+  repo = "https://github.com/pacollins/hugo-future-imperfect-slim"
