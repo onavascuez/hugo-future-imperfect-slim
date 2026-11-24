@@ -251,6 +251,7 @@ function search(query) {
     }).then(function (response) {
       if (!response.ok) { throw new Error('HTTP ' + response.status); }
       form.reset();
+      if (window.turnstile) { window.turnstile.reset(); }
       if (button) { button.disabled = false; button.textContent = label; }
       if (status) { status.textContent = form.getAttribute('data-sent'); status.hidden = false; }
     }).catch(function () {

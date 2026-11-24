@@ -35,6 +35,12 @@
           {{ if not .Params.netlify }}
           <input type="text" name="_gotcha" class="contact-trap" tabindex="-1" autocomplete="off" aria-hidden="true">
           {{ end }}
+          {{ with .Params.turnstileSiteKey }}
+          <fieldset>
+            <div class="cf-turnstile" data-sitekey="{{ . }}" data-language="{{ $.Lang }}"></div>
+            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+          </fieldset>
+          {{ end }}
           <fieldset>
             <div data-netlify-recaptcha="true"></div>
             <button name="submit" class="button" type="submit" id="contact-submit" tabindex="5">{{ i18n "submit" }}</button>
