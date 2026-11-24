@@ -2368,3 +2368,9 @@ body, input, select, textarea {
   margin: 1.5em 0 0;
   padding: 1em 1.25em;
 }
+
+/* Contact form: honeypot field that only spam bots fill in */
+
+.contact-trap {
+  display: none;
+}

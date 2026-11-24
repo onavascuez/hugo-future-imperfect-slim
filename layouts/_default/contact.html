@@ -32,6 +32,9 @@
           <fieldset>
             <input type="hidden" name="_language" value="{{ .Lang }}">
           </fieldset>
+          {{ if not .Params.netlify }}
+          <input type="text" name="_gotcha" class="contact-trap" tabindex="-1" autocomplete="off" aria-hidden="true">
+          {{ end }}
           <fieldset>
             <div data-netlify-recaptcha="true"></div>
             <button name="submit" class="button" type="submit" id="contact-submit" tabindex="5">{{ i18n "submit" }}</button>
