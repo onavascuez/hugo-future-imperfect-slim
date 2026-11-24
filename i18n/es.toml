@@ -73,6 +73,10 @@
   other = "Reiniciar"
 [submitted]
   other = "Enviado"
+[contact_sent]
+  other = "Mensaje enviado. ¡Gracias!"
+[contact_sending]
+  other = "Enviando…"
 [submit]
   other = "Enviar"
 

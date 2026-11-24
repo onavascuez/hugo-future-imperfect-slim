@@ -73,6 +73,10 @@
   other = "Esborra"
 [submitted]
   other = "Enviat"
+[contact_sent]
+  other = "Missatge enviat. Gràcies!"
+[contact_sending]
+  other = "Enviant…"
 [submit]
   other = "Envia"
 

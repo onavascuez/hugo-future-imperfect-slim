@@ -2359,3 +2359,12 @@ body, input, select, textarea {
   font-size: 0.8em;
   opacity: 0.75;
 }
+
+/* Contact form: confirmation shown after sending in the background */
+
+.contact-status {
+  border: $primary-border;
+  border-left: 4px solid $accent-color;
+  margin: 1.5em 0 0;
+  padding: 1em 1.25em;
+}

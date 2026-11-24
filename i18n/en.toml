@@ -73,6 +73,10 @@
   other = "Reset"
 [submitted]
   other = "Submitted"
+[contact_sent]
+  other = "Message sent. Thank you!"
+[contact_sending]
+  other = "Sending…"
 [submit]
   other = "Submit"
 

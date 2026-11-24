@@ -231,3 +231,31 @@ function search(query) {
   var headings = document.querySelectorAll('.guide-body h2[id], .guide-body h3[id]');
   for (var j = 0; j < headings.length; j++) { observer.observe(headings[j]); }
 })();
+
+// Contact form: send it in the background, then clear it and confirm on the
+// page. If that is not possible, fall back to a normal form submission.
+(function () {
+  var form = document.querySelector('form#contact[data-ajax]');
+  if (!form || !window.fetch || !window.FormData) { return; }
+  var status = form.querySelector('.contact-status');
+  var button = form.querySelector('button[type="submit"]');
+  var label = button ? button.textContent : '';
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    if (button) { button.disabled = true; button.textContent = form.getAttribute('data-sending'); }
+    if (status) { status.hidden = true; }
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function (response) {
+      if (!response.ok) { throw new Error('HTTP ' + response.status); }
+      form.reset();
+      if (button) { button.disabled = false; button.textContent = label; }
+      if (status) { status.textContent = form.getAttribute('data-sent'); status.hidden = false; }
+    }).catch(function () {
+      // Let the form service handle it on its own page (captcha, errors…)
+      HTMLFormElement.prototype.submit.call(form);
+    });
+  });
+})();

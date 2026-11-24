@@ -73,6 +73,10 @@
   other = "Effacer"
 [submitted]
   other = "Envoyé"
+[contact_sent]
+  other = "Message envoyé. Merci !"
+[contact_sending]
+  other = "Envoi…"
 [submit]
   other = "Envoyer"
 
