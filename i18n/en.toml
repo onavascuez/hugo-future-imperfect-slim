@@ -95,3 +95,19 @@
   other = "No results found."
 [search_error]
   other = "Could not load the search index."
+
+# Guide and review layouts
+[guide_contents]
+  other = "Contents"
+[updated]
+  other = "Updated"
+[review_rating]
+  other = "Rating"
+[review_price]
+  other = "Price"
+[review_pros]
+  other = "Pros"
+[review_cons]
+  other = "Cons"
+[review_specs]
+  other = "Specifications"

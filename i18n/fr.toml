@@ -95,3 +95,19 @@
   other = "Aucun résultat."
 [search_error]
   other = "Impossible de charger l'index de recherche."
+
+# Guide and review layouts
+[guide_contents]
+  other = "Sommaire"
+[updated]
+  other = "Mis à jour"
+[review_rating]
+  other = "Note"
+[review_price]
+  other = "Prix"
+[review_pros]
+  other = "Les plus"
+[review_cons]
+  other = "Les moins"
+[review_specs]
+  other = "Caractéristiques"

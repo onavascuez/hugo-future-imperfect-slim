@@ -95,3 +95,19 @@
   other = "No s'ha trobat res."
 [search_error]
   other = "No s'ha pogut carregar l'índex de cerca."
+
+# Guide and review layouts
+[guide_contents]
+  other = "Contingut"
+[updated]
+  other = "Actualitzat"
+[review_rating]
+  other = "Valoració"
+[review_price]
+  other = "Preu"
+[review_pros]
+  other = "A favor"
+[review_cons]
+  other = "En contra"
+[review_specs]
+  other = "Especificacions"

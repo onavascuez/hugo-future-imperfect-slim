@@ -17,6 +17,7 @@ Thanks to [Patrick Collins](https://github.com/pacollins) and everyone who contr
 - [Requirements](#requirements)
 - [Getting started](#getting-started)
 - [Features](#features)
+- [Layouts: post, guide and review](#layouts-post-guide-and-review)
 - [What is new in this fork](#what-is-new-in-this-fork)
 - [Coming from the archived theme](#coming-from-the-archived-theme)
 - [Configuration added by this fork](#configuration-added-by-this-fork)
@@ -85,6 +86,62 @@ Inherited from Hugo Future Imperfect Slim:
 - Options for how featured images fill their frame (`imageStretch`, `removeBlur`).
 - Your own CSS and JavaScript on top of the theme (`static/css/add-on.css`, `static/js/add-on.js`).
 
+## Layouts: post, guide and review
+
+Every post uses the regular layout unless its front matter says otherwise. Two more layouts are available, for any post in any section.
+
+### Guide
+
+For long, structured content. Add `layout = "guide"`:
+
+```toml
++++
+title = "Electricity basics"
+date = "2026-11-10"
+lastmod = "2026-11-22"
+layout = "guide"
++++
+```
+
+- The table of contents is built from the second and third level headings of the post.
+- On wide screens it sits in a column next to the text, stays in place while scrolling and marks the section being read. On narrow screens it goes above the text.
+- If `lastmod` differs from `date`, it shows when the guide was last updated.
+
+### Review
+
+For a product review. Add `layout = "review"` and describe the product in a `review` table. Every field is optional:
+
+```toml
++++
+title = "A month with the Example 40"
+date = "2026-11-05"
+layout = "review"
+
+[review]
+  product = "Example 40"
+  brand = "Sample Brand"
+  rating = 4.5            # out of 5
+  price = "$399"
+  verdict = "Cools fast and uses little power."
+  pros = ["Reaches temperature in under an hour", "Low power draw"]
+  cons = ["The compressor can be heard at night"]
+  disclosure = "The link below is an affiliate link."
+  [[review.specs]]
+    name = "Capacity"
+    value = "40 litres"
+  [[review.links]]
+    label = "See it at the shop"
+    url = "https://example.org/"
++++
+```
+
+- A box at the top shows the brand, the product, the price, the rating as a number and as stars, and the verdict.
+- Pros and cons go in two boxes under it, then the body of the post, then the specifications as a table and the links as buttons.
+- Links open in a new tab and are marked `rel="nofollow sponsored"`.
+- `disclosure` is printed under the links. Set a default for every review with `[params.review] disclosure` in the site configuration.
+
+`exampleSite` has one post of each: "Guide Layout" and "Review Layout".
+
 ## What is new in this fork
 
 ### It builds again
@@ -114,6 +171,7 @@ They live in a single section at the end of `assets/scss/main.scss`, titled "Clo
 
 ### New features
 
+- **Two new layouts:** [guide and review](#layouts-post-guide-and-review).
 - **Featured posts in the sidebar**, optional, above the recent posts.
 - **Search:**
   - The index is requested the first time the search is opened, not on every page load.
@@ -175,6 +233,10 @@ And two things outside the configuration:
 [params.search]
   # Stop words of the site language, ignored by the search
   stopWords               = []
+
+[params.review]
+  # Text under the links of every review, such as an affiliate disclosure
+  disclosure              = ""
 ```
 
 Strings added to the translation files, in English, Spanish, Catalan and French. The other languages show them in English until someone translates them:
@@ -184,6 +246,8 @@ Strings added to the translation files, in English, Spanish, Catalan and French.
 | `featured_posts` | Title of the featured posts block |
 | `search`, `share` | Labels in the menu |
 | `search_no_results`, `search_error` | Messages of the search |
+| `guide_contents`, `updated` | Guide layout |
+| `review_rating`, `review_price`, `review_pros`, `review_cons`, `review_specs` | Review layout |
 
 ## Customizing
 
@@ -195,6 +259,7 @@ The [wiki of the original repository](https://github.com/pacollins/hugo-future-i
 
 ## Known limits
 
+- **The guide's sticky table of contents and section highlight** were checked in screenshots and by reading the code, not by scrolling in a browser.
 - **Not everything has been tested again.** The fork was checked with the example site and with one real site: posts, lists, sidebar, search, several languages and the three screen sizes. Disqus, Utterances, Staticman, the contact form, the share buttons and `enableCDN = true` build without errors but have not been tried against the real services.
 - **The search stems words with English rules**, so in other languages plurals and verb forms are not matched to each other. Matching from the beginning of a word covers many of those cases.
 - **Lunr is loaded on every page**, about 100 KB. Only the index is loaded on demand.

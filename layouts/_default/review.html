@@ -1,0 +1,96 @@
+{{- /* Review of a product. Use it with `layout: review` in the front matter and
+       describe the product under `review`:
+
+       review:
+         product: "Name of the product"
+         brand: "Brand"
+         rating: 4.5            # out of 5
+         price: "399 €"
+         verdict: "One or two sentences."
+         pros: ["...", "..."]
+         cons: ["...", "..."]
+         specs:
+           - { name: "Weight", value: "4 kg" }
+         links:
+           - { label: "Buy at the shop", url: "https://example.org/" }
+*/ -}}
+{{ define "main" }}
+  {{- $r := .Params.review | default dict }}
+  <article>
+    <div class="post review">
+      {{ .Render "header" }}
+      <div id="socnet-share">
+        {{ partial "share-buttons" . }}
+      </div>
+      <div class="content">
+        {{ .Render "featured" }}
+
+        <aside class="review-box">
+          <div class="review-product">
+            {{ with $r.brand }}<p class="review-brand">{{ . }}</p>{{ end }}
+            <h2>{{ $r.product | default .Title }}</h2>
+            {{ with $r.price }}<p class="review-price"><span>{{ i18n "review_price" | default "Price" }}</span> {{ . }}</p>{{ end }}
+          </div>
+          {{ with $r.rating }}
+          <div class="review-rating">
+            <span class="review-score">{{ . | lang.FormatNumber 1 }}</span><span class="review-outof">/ 5</span>
+            <span class="review-stars" style="{{ printf "--rating: %.2f" (float .) | safeCSS }}" role="img" aria-label="{{ i18n "review_rating" | default "Rating" }}: {{ . }} / 5"></span>
+          </div>
+          {{ end }}
+          {{ with $r.verdict }}<p class="review-verdict">{{ . | markdownify }}</p>{{ end }}
+        </aside>
+
+        {{ if or $r.pros $r.cons }}
+        <div class="review-proscons">
+          {{ with $r.pros }}
+          <section class="review-pros">
+            <h3>{{ i18n "review_pros" | default "Pros" }}</h3>
+            <ul>{{ range . }}<li>{{ . | markdownify }}</li>{{ end }}</ul>
+          </section>
+          {{ end }}
+          {{ with $r.cons }}
+          <section class="review-cons">
+            <h3>{{ i18n "review_cons" | default "Cons" }}</h3>
+            <ul>{{ range . }}<li>{{ . | markdownify }}</li>{{ end }}</ul>
+          </section>
+          {{ end }}
+        </div>
+        {{ end }}
+
+        {{ .Content }}
+
+        {{ with $r.specs }}
+        <section class="review-specs">
+          <h2>{{ i18n "review_specs" | default "Specifications" }}</h2>
+          <table>
+            <tbody>
+              {{ range . }}<tr><td>{{ .name }}</td><td>{{ .value | markdownify }}</td></tr>{{ end }}
+            </tbody>
+          </table>
+        </section>
+        {{ end }}
+
+        {{ with $r.links }}
+        <div class="review-links">
+          {{ range . }}<a href="{{ .url }}" class="button" rel="nofollow sponsored noopener" target="_blank">{{ .label }}</a>{{ end }}
+        </div>
+        {{ end }}
+        {{ with (or $r.disclosure site.Params.review.disclosure) }}<p class="review-disclosure">{{ . | markdownify }}</p>{{ end }}
+      </div>
+      <footer>
+        {{ .Render "stats" }}
+      </footer>
+    </div>
+    {{ if not ( eq .Params.comments false) }}
+      {{ .Render "comments" }}
+    {{ end }}
+  </article>
+  <div class="pagination">
+    {{ if .NextInSection }}
+      <a href="{{ .NextInSection.RelPermalink }}" class="button left"><span>{{ .NextInSection.Title }}</span></a>
+    {{ end }}
+    {{ if .PrevInSection }}
+      <a href="{{ .PrevInSection.RelPermalink }}" class="button right"><span>{{ .PrevInSection.Title }}</span></a>
+    {{ end }}
+  </div>
+{{ end }}

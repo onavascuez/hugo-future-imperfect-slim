@@ -207,3 +207,27 @@ function search(query) {
     return [];
   }
 }
+
+// Guide layout: mark the section being read in the table of contents
+(function () {
+  var toc = document.querySelector('.guide-toc');
+  if (!toc || !('IntersectionObserver' in window)) { return; }
+  var links = {};
+  var anchors = toc.querySelectorAll('a[href^="#"]');
+  for (var i = 0; i < anchors.length; i++) {
+    links[decodeURIComponent(anchors[i].getAttribute('href').slice(1))] = anchors[i];
+  }
+  var current = null;
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) { return; }
+      var link = links[entry.target.id];
+      if (!link) { return; }
+      if (current) { current.classList.remove('active'); }
+      link.classList.add('active');
+      current = link;
+    });
+  }, { rootMargin: '-80px 0px -70% 0px' });
+  var headings = document.querySelectorAll('.guide-body h2[id], .guide-body h3[id]');
+  for (var j = 0; j < headings.length; j++) { observer.observe(headings[j]); }
+})();

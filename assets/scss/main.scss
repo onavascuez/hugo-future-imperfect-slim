@@ -2125,3 +2125,237 @@ body, input, select, textarea {
     padding: 4.5em;
   }
 }
+
+/* ==========================================================================
+   Guide and review layouts
+   ========================================================================== */
+
+/* Guide: table of contents next to the text on wide screens, above it on
+   narrow ones. Use with `layout: guide`. */
+
+.guide-toc {
+  border: $primary-border;
+  margin: 0 0 2em;
+  padding: 1.5em;
+  h2 {
+    font-size: 0.7em;
+    margin: 0 0 1em;
+  }
+  #TableOfContents {
+    border: 0;
+  }
+  #TableOfContents ul,
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    ul {
+      padding-left: 1em;
+    }
+  }
+  li {
+    margin: 0;
+  }
+  a {
+    border-bottom: 0;
+    border-left: 2px solid transparent;
+    display: block;
+    font-size: 0.9em;
+    line-height: 1.4;
+    padding: 0.4em 0 0.4em 0.75em;
+    &.active {
+      border-left-color: $accent-color;
+      color: $accent-color;
+    }
+  }
+  .guide-updated {
+    border-top: $primary-border;
+    font-family: $header-font;
+    font-size: 0.6em;
+    letter-spacing: 0.25em;
+    margin: 1.5em 0 0;
+    padding-top: 1.5em;
+    text-transform: uppercase;
+  }
+}
+
+.guide-body {
+  min-width: 0;
+  > :first-child {
+    margin-top: 0;
+  }
+  h2,
+  h3 {
+    scroll-margin-top: 5em;
+  }
+}
+
+@media (min-width: 1280px) {
+  .guide-layout {
+    align-items: start;
+    display: grid;
+    gap: 3em;
+    grid-template-columns: minmax(0, 1fr) 16em;
+  }
+  .guide-toc {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    max-height: calc(100vh - 7em);
+    overflow-y: auto;
+    position: sticky;
+    top: 5em;
+  }
+  .guide-body {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+/* Review: product box, pros and cons, specifications and links.
+   Use with `layout: review`. */
+
+.review-box {
+  align-items: center;
+  border: $primary-border;
+  display: grid;
+  gap: 1em 2em;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0 0 2em;
+  padding: 1.5em;
+  @include for-laptop-up {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 2em;
+  }
+  h2 {
+    font-size: 1.1em;
+    margin: 0;
+  }
+  p {
+    margin: 0;
+  }
+}
+
+.review-brand,
+.review-price span,
+.review-outof {
+  font-family: $header-font;
+  font-size: 0.6em;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.review-price {
+  margin-top: 0.5em !important;
+  span {
+    margin-right: 0.75em;
+  }
+}
+
+.review-rating {
+  @include for-laptop-up {
+    text-align: right;
+  }
+}
+
+.review-score {
+  color: $header-color;
+  font-family: $header-font;
+  font-size: 2.5em;
+  font-weight: 900;
+  line-height: 1;
+  margin-right: 0.15em;
+}
+
+.review-stars {
+  --rating: 0;
+  display: block;
+  font-size: 1.25em;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  &::before {
+    background: linear-gradient(90deg, $accent-color calc(var(--rating) / 5 * 100%), $border-color calc(var(--rating) / 5 * 100%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    content: "★★★★★";
+  }
+}
+
+.review-verdict {
+  border-top: $primary-border;
+  grid-column: 1 / -1;
+  padding-top: 1em;
+}
+
+.review-proscons {
+  display: grid;
+  gap: 1.5em;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0 0 2em;
+  @include for-laptop-up {
+    gap: 2em;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  section {
+    border: $primary-border;
+    padding: 1.5em;
+  }
+  h3 {
+    font-size: 0.7em;
+    margin: 0 0 1em;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    padding: 0.35em 0 0.35em 1.75em;
+    position: relative;
+    &::before {
+      font-family: $body-font;
+      font-size: 1.2em;
+      font-weight: 700;
+      left: 0.1em;
+      line-height: 1.45;
+      position: absolute;
+    }
+  }
+}
+
+.review-pros li::before {
+  color: $accent-color;
+  content: "+";
+}
+
+.review-cons li::before {
+  color: $warning-color;
+  content: "\2212";
+}
+
+.review-specs {
+  margin: 2em 0;
+  table {
+    width: 100%;
+  }
+  td:first-child {
+    font-family: $header-font;
+    font-size: 0.7em;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    width: 40%;
+  }
+}
+
+.review-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  margin: 2em 0 1em;
+}
+
+.review-disclosure {
+  font-size: 0.8em;
+  opacity: 0.75;
+}
